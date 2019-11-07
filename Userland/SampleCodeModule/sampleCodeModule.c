@@ -18,3 +18,4 @@ int main() {
 }
 
 //El Barto
+//Si bart puede ser el barto, entonces yo puedo ser El Homo
