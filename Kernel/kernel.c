@@ -4,6 +4,8 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 
+//puto el q lee xD
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
