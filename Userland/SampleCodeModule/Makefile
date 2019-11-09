@@ -2,14 +2,20 @@ include ../Makefile.inc
 
 MODULE=0000-sampleCodeModule.bin
 SOURCES=$(wildcard [^_]*.c)
+ASMSOURCES=$(wildcard asm/*.asm)
+ASMOBJECTS=$(ASMSOURCES:.asm=.o)
+ASMEXECUTABLE=$(ASMOBJECTS:.o=)
 
-all: $(MODULE)
+all: $(MODULE) compile linkedit
 
 $(MODULE): $(SOURCES)
 	$(GCC) $(GCCFLAGS) -T sampleCodeModule.ld _loader.c $(SOURCES) -o ../$(MODULE)
 
-%.o : %.asm
-	$(ASM) $(ASMFLAGS) $< -o $@
+compile:
+	$(ASM) $(ASMFLAGS) $(ASMSOURCES)
+
+linkedit:
+	$(LD) $(ASMLINKEDITFLAGS) -o $(ASMEXECUTABLE) $(ASMOBJECTS)
 
 clean:
 	rm -rf asm/*.o *.o 
