@@ -6,16 +6,16 @@ ASMSOURCES=$(wildcard asm/*.asm)
 ASMOBJECTS=$(ASMSOURCES:.asm=.o)
 ASMEXECUTABLE=$(ASMOBJECTS:.o=)
 
-all: $(MODULE) compile linkedit
+all: $(MODULE) 
 
-$(MODULE): $(SOURCES)
+$(MODULE): $(SOURCES) $(ASMOBJECTS) $(ASMEXECUTABLE)
 	$(GCC) $(GCCFLAGS) -T sampleCodeModule.ld _loader.c $(SOURCES) -o ../$(MODULE)
 
-compile:
-	$(ASM) $(ASMFLAGS) $(ASMSOURCES)
+%.o : %.asm
+	$(ASM) $(ASMFLAGS) $< -o $@
 
-linkedit:
-	$(LD) $(ASMLINKEDITFLAGS) -o $(ASMEXECUTABLE) $(ASMOBJECTS)
+% : %.o
+	$(LD) $(ASMLINKEDITFLAGS) -o $@ $<
 
 clean:
 	rm -rf asm/*.o *.o 
